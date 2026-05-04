@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Agent OS — SaaS Partnerships</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #000000;
+    --bg-1: #0a0a0a;
+    --bg-2: #111111;
+    --bg-3: #1a1a1a;
+    --bg-glass: rgba(255,255,255,0.04);
+    --border: rgba(255,255,255,0.08);
+    --border-hover: rgba(255,255,255,0.18);
+    --text: #f5f5f7;
+    --text-2: #a1a1a6;
+    --text-3: #6e6e73;
+    --accent: #0a84ff;
+    --accent-2: #30d158;
+    --accent-3: #ff9f0a;
+    --accent-4: #ff453a;
+    --accent-5: #bf5af2;
+    --accent-6: #64d2ff;
+    --glow: rgba(10, 132, 255, 0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, 'SF Pro Display', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Ambient background */
+  body::before {
+    content: '';
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(ellipse at 20% 20%, rgba(10,132,255,0.05) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(191,90,242,0.04) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(48,209,88,0.03) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Nav */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 0 48px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(0,0,0,0.72);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+    color: var(--text);
+  }
+
+  .nav-logo span {
+    color: var(--accent);
+  }
+
+  .nav-status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--text-3);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent-2);
+    box-shadow: 0 0 8px var(--accent-2);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  /* Main */
+  main {
+    position: relative;
+    z-index: 1;
+    padding: 100px 48px 80px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* Hero */
+  .hero {
+    text-align: center;
+    margin-bottom: 72px;
+    animation: fadeUp 0.8s ease both;
+  }
+
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: rgba(10,132,255,0.1);
+    border: 1px solid rgba(10,132,255,0.2);
+    padding: 6px 14px;
+    border-radius: 20px;
+    margin-bottom: 24px;
+  }
+
+  .hero h1 {
+    font-size: clamp(40px, 6vw, 72px);
+    font-weight: 700;
+    letter-spacing: -2px;
+    line-height: 1.05;
+    margin-bottom: 16px;
+    background: linear-gradient(180deg, #f5f5f7 0%, #86868b 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero p {
+    font-size: 18px;
+    color: var(--text-2);
+    font-weight: 400;
+    line-height: 1.6;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+  /* Config bar */
+  .config-bar {
+    background: var(--bg-glass);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px 24px;
+    margin-bottom: 48px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    animation: fadeUp 0.8s 0.1s ease both;
+    backdrop-filter: blur(10px);
+  }
+
+  .config-label {
+    font-size: 12px;
+    color: var(--text-3);
+    font-family: 'JetBrains Mono', monospace;
+    white-space: nowrap;
+  }
+
+  .config-input {
+    flex: 1;
+    min-width: 300px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 16px;
+    color: var(--text);
+    font-size: 13px;
+    font-family: 'JetBrains Mono', monospace;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .config-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(10,132,255,0.15);
+  }
+
+  .config-input::placeholder { color: var(--text-3); }
+
+  /* Agents grid */
+  .agents-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 20px;
+  }
+
+  /* Agent card */
+  .agent-card {
+    background: var(--bg-glass);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 28px;
+    backdrop-filter: blur(10px);
+    transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    animation: fadeUp 0.6s ease both;
+    cursor: default;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .agent-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--card-accent, var(--accent)), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .agent-card:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  }
+
+  .agent-card:hover::before { opacity: 1; }
+
+  .agent-card:nth-child(1) { --card-accent: #0a84ff; animation-delay: 0.1s; }
+  .agent-card:nth-child(2) { --card-accent: #30d158; animation-delay: 0.15s; }
+  .agent-card:nth-child(3) { --card-accent: #ff9f0a; animation-delay: 0.2s; }
+  .agent-card:nth-child(4) { --card-accent: #ff453a; animation-delay: 0.25s; }
+  .agent-card:nth-child(5) { --card-accent: #bf5af2; animation-delay: 0.3s; }
+  .agent-card:nth-child(6) { --card-accent: #64d2ff; animation-delay: 0.35s; }
+
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  .agent-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  .agent-badge {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 20px;
+    border: 1px solid;
+  }
+
+  .badge-blue { color: #0a84ff; background: rgba(10,132,255,0.1); border-color: rgba(10,132,255,0.2); }
+  .badge-green { color: #30d158; background: rgba(48,209,88,0.1); border-color: rgba(48,209,88,0.2); }
+  .badge-orange { color: #ff9f0a; background: rgba(255,159,10,0.1); border-color: rgba(255,159,10,0.2); }
+  .badge-red { color: #ff453a; background: rgba(255,69,58,0.1); border-color: rgba(255,69,58,0.2); }
+  .badge-purple { color: #bf5af2; background: rgba(191,90,242,0.1); border-color: rgba(191,90,242,0.2); }
+  .badge-cyan { color: #64d2ff; background: rgba(100,210,255,0.1); border-color: rgba(100,210,255,0.2); }
+
+  .agent-name {
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+    margin-bottom: 6px;
+    color: var(--text);
+  }
+
+  .agent-desc {
+    font-size: 13px;
+    color: var(--text-3);
+    line-height: 1.5;
+    margin-bottom: 20px;
+  }
+
+  /* Form fields */
+  .fields {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .field-label {
+    font-size: 11px;
+    color: var(--text-3);
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.04em;
+  }
+
+  .field-input {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 9px 14px;
+    color: var(--text);
+    font-size: 13px;
+    font-family: -apple-system, sans-serif;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+    width: 100%;
+    resize: none;
+  }
+
+  .field-input:focus {
+    border-color: var(--card-accent, var(--accent));
+    background: rgba(255,255,255,0.06);
+  }
+
+  .field-input::placeholder { color: var(--text-3); font-size: 12px; }
+
+  /* Run button */
+  .run-btn {
+    width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    border: none;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.2px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: var(--card-accent, var(--accent));
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .run-btn:hover {
+    filter: brightness(1.15);
+    transform: scale(1.01);
+  }
+
+  .run-btn:active { transform: scale(0.99); }
+
+  .run-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .btn-spinner {
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    display: none;
+  }
+
+  .run-btn.loading .btn-spinner { display: block; }
+  .run-btn.loading .btn-text { opacity: 0.7; }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Result panel */
+  .result-panel {
+    margin-top: 16px;
+    border-radius: 12px;
+    overflow: hidden;
+    display: none;
+    animation: slideDown 0.3s ease;
+  }
+
+  .result-panel.visible { display: block; }
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .result-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    font-size: 11px;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.04em;
+  }
+
+  .result-success .result-header {
+    background: rgba(48,209,88,0.1);
+    color: #30d158;
+    border: 1px solid rgba(48,209,88,0.2);
+    border-bottom: none;
+    border-radius: 12px 12px 0 0;
+  }
+
+  .result-error .result-header {
+    background: rgba(255,69,58,0.1);
+    color: #ff453a;
+    border: 1px solid rgba(255,69,58,0.2);
+    border-bottom: none;
+    border-radius: 12px 12px 0 0;
+  }
+
+  .result-body {
+    padding: 14px;
+    font-size: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    line-height: 1.6;
+    color: var(--text-2);
+    white-space: pre-wrap;
+    word-break: break-all;
+    max-height: 220px;
+    overflow-y: auto;
+  }
+
+  .result-success .result-body {
+    background: rgba(48,209,88,0.05);
+    border: 1px solid rgba(48,209,88,0.2);
+    border-top: none;
+    border-radius: 0 0 12px 12px;
+  }
+
+  .result-error .result-body {
+    background: rgba(255,69,58,0.05);
+    border: 1px solid rgba(255,69,58,0.2);
+    border-top: none;
+    border-radius: 0 0 12px 12px;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+  /* Animations */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Webhook URL display */
+  .webhook-url {
+    font-size: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--text-3);
+    margin-top: 8px;
+    padding: 6px 10px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    word-break: break-all;
+    line-height: 1.4;
+  }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 48px;
+    color: var(--text-3);
+    font-size: 12px;
+    position: relative;
+    z-index: 1;
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Vearse Softare inc <span>OS</span></div>
+  <div class="nav-status">
+    <div class="status-dot"></div>
+    All agents online
+  </div>
+</nav>
+
+<main>
+  <div class="hero">
+    <div class="hero-eyebrow">⚡ SaaS Partnerships & Integrations</div>
+    <h1>Vearse Softare inc OS</h1>
+    <p>Intelligent agents for every stage of your partnership pipeline — powered by Groq.</p>
+  </div>
+
+  <div class="agents-grid" id="agentsGrid"></div>
+</main>
+
+<footer>
+  Built with n8n + Groq · Vearse Softare inc  OS · SaaS Partnerships
+</footer>
+
+<script>
+const agents = [
+  {
+    id: 'partner-qualification',
+    name: 'Partner Qualification',
+    icon: '🎯',
+    badge: 'badge-blue',
+    badgeText: 'Qualification',
+    desc: 'Evaluate and qualify potential SaaS partners based on fit, market overlap, and strategic value.',
+    url: 'https://learnersbyte1.app.n8n.cloud/webhook/partner-lead',
+    fields: [
+      { key: 'company_name', label: 'Company Name', placeholder: 'Acme Corp', type: 'text' },
+      { key: 'website', label: 'Website', placeholder: 'https://acme.com', type: 'text' },
+      { key: 'category', label: 'Category', placeholder: 'Email API, CRM, Analytics...', type: 'text' },
+      { key: 'contact_email', label: 'Contact Email', placeholder: 'partner@acme.com', type: 'text' },
+    ]
+  },
+  {
+    id: 'deal-intelligence',
+    name: 'Deal Intelligence',
+    icon: '🧠',
+    badge: 'badge-green',
+    badgeText: 'Intelligence',
+    desc: 'Analyze deal stages, predict outcomes, and surface actionable insights for active partnerships.',
+    url: 'https://learnersbyte1.app.n8n.cloud/webhook/deal-intelligence',
+    fields: [
+      { key: 'partner_name', label: 'Partner Name', placeholder: 'Acme Corp', type: 'text' },
+      { key: 'deal_stage', label: 'Deal Stage', placeholder: 'Discovery / Negotiation / Closing', type: 'text' },
+      { key: 'deal_value', label: 'Deal Value ($)', placeholder: '50000', type: 'text' },
+      { key: 'notes', label: 'Deal Notes', placeholder: 'Describe current deal status...', type: 'textarea' },
+    ]
+  },
+  {
+    id: 'health-score',
+    name: 'Health Score',
+    icon: '💚',
+    badge: 'badge-orange',
+    badgeText: 'Health',
+    desc: 'Score the health of existing partnerships based on activity, engagement, and revenue signals.',
+    url: 'https://learnersbyte1.app.n8n.cloud/webhook/health-score',
+    fields: [
+      { key: 'partner_name', label: 'Partner Name', placeholder: 'Acme Corp', type: 'text' },
+      { key: 'last_contact', label: 'Last Contact Date', placeholder: '2024-01-15', type: 'text' },
+      { key: 'monthly_revenue', label: 'Monthly Revenue ($)', placeholder: '12000', type: 'text' },
+      { key: 'issues', label: 'Known Issues', placeholder: 'Any blockers or concerns...', type: 'textarea' },
+    ]
+  },
+  {
+    id: 'contract-risk',
+    name: 'Contract Risk',
+    icon: '⚠️',
+    badge: 'badge-red',
+    badgeText: 'Risk',
+    desc: 'Identify legal, financial, and operational risks in partnership contracts before signing.',
+    url: 'https://learnersbyte1.app.n8n.cloud/webhook/contract-risk',
+    fields: [
+      { key: 'partner_name', label: 'Partner Name', placeholder: 'Acme Corp', type: 'text' },
+      { key: 'contract_type', label: 'Contract Type', placeholder: 'Revenue Share / SLA / API License', type: 'text' },
+      { key: 'contract_value', label: 'Contract Value ($)', placeholder: '100000', type: 'text' },
+      { key: 'terms', label: 'Key Terms / Clauses', placeholder: 'Paste key contract terms here...', type: 'textarea' },
+    ]
+  },
+  {
+    id: 'roi-report',
+    name: 'ROI Report',
+    icon: '📊',
+    badge: 'badge-purple',
+    badgeText: 'ROI',
+    desc: 'Generate detailed ROI reports for partnerships including revenue attribution and growth metrics.',
+    url: 'https://learnersbyte1.app.n8n.cloud/webhook/roi-report',
+    fields: [
+      { key: 'partner_name', label: 'Partner Name', placeholder: 'Acme Corp', type: 'text' },
+      { key: 'partnership_duration', label: 'Duration (months)', placeholder: '12', type: 'text' },
+      { key: 'total_revenue', label: 'Total Revenue ($)', placeholder: '250000', type: 'text' },
+      { key: 'investment', label: 'Total Investment ($)', placeholder: '50000', type: 'text' },
+    ]
+  },
+  {
+    id: 'outreach-agent',
+    name: 'Outreach Agent',
+    icon: '📨',
+    badge: 'badge-cyan',
+    badgeText: 'Outreach',
+    desc: 'Craft personalized outreach emails. Sends via IF node — email delivered to your inbox automatically.',
+    url: 'https://learnersbyte1.app.n8n.cloud/webhook/outreach-agent',
+    fields: [
+      { key: 'prospect_name', label: 'Prospect Name', placeholder: 'John Smith', type: 'text' },
+      { key: 'company', label: 'Company', placeholder: 'Acme Corp', type: 'text' },
+      { key: 'prospect_email', label: 'Prospect Email', placeholder: 'john@acme.com', type: 'text' },
+      { key: 'context', label: 'Outreach Context', placeholder: 'Why are you reaching out?', type: 'textarea' },
+    ]
+  }
+];
+
+function buildCard(agent, index) {
+  const fieldsHTML = agent.fields.map(f => `
+    <div class="field-group">
+      <label class="field-label">${f.label}</label>
+      ${f.type === 'textarea'
+        ? `<textarea class="field-input" id="${agent.id}-${f.key}" placeholder="${f.placeholder}" rows="2"></textarea>`
+        : `<input class="field-input" type="text" id="${agent.id}-${f.key}" placeholder="${f.placeholder}">`
+      }
+    </div>
+  `).join('');
+
+  return `
+    <div class="agent-card" style="--card-accent: var(--accent)">
+      <div class="card-header">
+        <div class="agent-icon">${agent.icon}</div>
+        <span class="agent-badge ${agent.badge}">${agent.badgeText}</span>
+      </div>
+      <div class="agent-name">${agent.name} Agent</div>
+      <div class="agent-desc">${agent.desc}</div>
+      <div class="fields">${fieldsHTML}</div>
+      <button class="run-btn" id="btn-${agent.id}" onclick="runAgent('${agent.id}')">
+        <div class="btn-spinner"></div>
+        <span class="btn-text">Run Agent →</span>
+      </button>
+      <div class="webhook-url" id="url-${agent.id}">URL: not configured</div>
+      <div class="result-panel" id="result-${agent.id}">
+        <div class="result-header"></div>
+        <div class="result-body"></div>
+      </div>
+    </div>
+  `;
+}
+
+// Render cards
+const grid = document.getElementById('agentsGrid');
+grid.innerHTML = agents.map((a, i) => buildCard(a, i)).join('');
+
+// Set card accent colors
+const colors = ['#0a84ff','#30d158','#ff9f0a','#ff453a','#bf5af2','#64d2ff'];
+document.querySelectorAll('.agent-card').forEach((card, i) => {
+  card.style.setProperty('--card-accent', colors[i]);
+});
+
+// Show hardcoded URLs on each card
+agents.forEach(agent => {
+  const el = document.getElementById(`url-${agent.id}`);
+  if (el) el.textContent = `POST → ${agent.url}`;
+});
+
+async function runAgent(agentId) {
+  const agent = agents.find(a => a.id === agentId);
+
+  // Collect field values
+  const data = {};
+  agent.fields.forEach(f => {
+    const el = document.getElementById(`${agentId}-${f.key}`);
+    if (el) data[f.key] = el.value.trim();
+  });
+
+  // Check required fields
+  const empty = agent.fields.filter(f => !data[f.key]);
+  if (empty.length > 0) {
+    showResult(agentId, false, `Please fill in: ${empty.map(f => f.label).join(', ')}`);
+    return;
+  }
+
+  const btn = document.getElementById(`btn-${agentId}`);
+  btn.classList.add('loading');
+  btn.disabled = true;
+
+  try {
+    const response = await fetch(agent.url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type: agentId, data })
+    });
+
+    let result;
+    const text = await response.text();
+    try {
+      result = JSON.parse(text);
+      result = JSON.stringify(result, null, 2);
+    } catch {
+      result = text;
+    }
+
+    if (response.ok) {
+      showResult(agentId, true, '✅ Agent triggered!\n\nCheck your email — result coming shortly.\n\nResponse:\n' + result);
+    } else {
+      showResult(agentId, false, `HTTP ${response.status}: ${result}`);
+    }
+  } catch (err) {
+    showResult(agentId, false, `Network error: ${err.message}\n\nMake sure your n8n workflow is Published!`);
+  } finally {
+    btn.classList.remove('loading');
+    btn.disabled = false;
+  }
+}
+
+function showResult(agentId, success, message) {
+  const panel = document.getElementById(`result-${agentId}`);
+  const header = panel.querySelector('.result-header');
+  const body = panel.querySelector('.result-body');
+
+  panel.className = `result-panel visible ${success ? 'result-success' : 'result-error'}`;
+  header.textContent = success ? '✓ SUCCESS' : '✕ ERROR';
+  body.textContent = message;
+}
+</script>
+</body>
+</html>
