@@ -520,87 +520,92 @@
 
   <script>
     const agents = [
-      {
-        id: 'partner-qualification',
-        name: 'Partner Qualification',
-        icon: '🎯',
-        color: 'blue',
-        badge: 'badge-blue',
-        badgeText: 'Qualification',
-        desc: 'Evaluate new partner leads and trigger the core agent workflow.',
-        url: 'https://learnersbyte1.app.n8n.cloud/webhook/agent-os',
-        fields: [
-          { key: 'company_name', label: 'Company Name', placeholder: 'Acme Corp', type: 'text' },
-          { key: 'website', label: 'Website', placeholder: 'https://acme.com', type: 'text' },
-          { key: 'category', label: 'Category', placeholder: 'CRM, Analytics, API Platform', type: 'text' },
-          { key: 'contact_email', label: 'Contact Email', placeholder: 'partner@acme.com', type: 'text' }
-        ]
-      },
-      {
-        id: 'follow-up-agent',
-        name: 'Follow-up Agent',
-        icon: '📬',
-        color: 'green',
-        badge: 'badge-green',
-        badgeText: 'Follow-up',
-        desc: 'Trigger follow-up sequences and keep partner communication moving.',
-        url: 'https://learnersbyte1.app.n8n.cloud/webhook/agent-os/follow-up',
-        fields: [
-          { key: 'partner_name', label: 'Partner Name', placeholder: 'Acme Corp', type: 'text' },
-          { key: 'contact_name', label: 'Contact Name', placeholder: 'John Smith', type: 'text' },
-          { key: 'contact_email', label: 'Contact Email', placeholder: 'john@acme.com', type: 'text' },
-          { key: 'context', label: 'Follow-up Context', placeholder: 'Need a follow-up after intro call...', type: 'textarea', full: true }
-        ]
-      },
-      {
-        id: 'deal-intelligence',
-        name: 'Deal Intelligence',
-        icon: '🧠',
-        color: 'orange',
-        badge: 'badge-orange',
-        badgeText: 'Deals',
-        desc: 'Analyze active deals and send deal update requests to the pipeline workflow.',
-        url: 'https://learnersbyte1.app.n8n.cloud/webhook/agent-os/deal-update',
-        fields: [
-          { key: 'partner_name', label: 'Partner Name', placeholder: 'Acme Corp', type: 'text' },
-          { key: 'deal_stage', label: 'Deal Stage', placeholder: 'Discovery / Negotiation / Closing', type: 'text' },
-          { key: 'deal_value', label: 'Deal Value ($)', placeholder: '50000', type: 'text' },
-          { key: 'notes', label: 'Deal Notes', placeholder: 'Describe current deal status...', type: 'textarea', full: true }
-        ]
-      },
-      {
-        id: 'integration-tracker',
-        name: 'Integration Tracker',
-        icon: '🔌',
-        color: 'red',
-        badge: 'badge-red',
-        badgeText: 'Integration',
-        desc: 'Track partner integration progress, blockers, and operational updates.',
-        url: 'https://learnersbyte1.app.n8n.cloud/webhook/agent-os/integration',
-        fields: [
-          { key: 'partner_name', label: 'Partner Name', placeholder: 'Acme Corp', type: 'text' },
-          { key: 'integration_name', label: 'Integration Name', placeholder: 'CRM Sync API', type: 'text' },
-          { key: 'current_stage', label: 'Current Stage', placeholder: 'Testing / Development / Blocked', type: 'text' },
-          { key: 'blockers', label: 'Blockers', placeholder: 'OAuth issue, sandbox delay...', type: 'textarea', full: true }
-        ]
-      },
-      {
-        id: 'deal-monitor',
-        name: 'Deal Monitor',
-        icon: '📈',
-        color: 'purple',
-        badge: 'badge-purple',
-        badgeText: 'Pipeline',
-        desc: 'Use the deal-update endpoint for a second dedicated deal monitoring workspace.',
-        url: 'https://learnersbyte1.app.n8n.cloud/webhook/agent-os/deal-update',
-        fields: [
-          { key: 'partner_name', label: 'Partner Name', placeholder: 'Acme Corp', type: 'text' },
-          { key: 'priority', label: 'Priority', placeholder: 'High / Medium / Low', type: 'text' },
-          { key: 'owner', label: 'Owner', placeholder: 'Partnership Manager', type: 'text' },
-          { key: 'update', label: 'Latest Update', placeholder: 'Waiting on revised terms...', type: 'textarea', full: true }
-        ]
-      }
-    ];
+  {
+    id: 'partner-qualification',
+    name: 'Partner Qualification',
+    icon: '🎯',
+    color: 'blue',
+    badge: 'badge-blue',
+    badgeText: 'Qualification',
+    desc: 'Evaluate new partner leads and trigger the core agent workflow.',
+    url: 'https://learnersbyte1.app.n8n.cloud/webhook/agent-os',
+    fields: [
+      { key: 'company_name', label: 'Company Name', placeholder: 'Acme Corp', type: 'text' },
+      { key: 'website', label: 'Website', placeholder: 'https://acme.com', type: 'text' },
+      { key: 'category', label: 'Category', placeholder: 'CRM, Analytics, API Platform', type: 'text' },
+      { key: 'contact_email', label: 'Contact Email', placeholder: 'partner@acme.com', type: 'text' },
+      { key: 'recipient_email', label: 'Send Report To', placeholder: 'you@company.com', type: 'text' }
+    ]
+  },
+  {
+    id: 'follow-up-agent',
+    name: 'Follow-up Agent',
+    icon: '📬',
+    color: 'green',
+    badge: 'badge-green',
+    badgeText: 'Follow-up',
+    desc: 'Trigger follow-up sequences and keep partner communication moving.',
+    url: 'https://learnersbyte1.app.n8n.cloud/webhook/agent-os/follow-up',
+    fields: [
+      { key: 'partner_name', label: 'Partner Name', placeholder: 'Acme Corp', type: 'text' },
+      { key: 'contact_name', label: 'Contact Name', placeholder: 'John Smith', type: 'text' },
+      { key: 'contact_email', label: 'Contact Email', placeholder: 'john@acme.com', type: 'text' },
+      { key: 'context', label: 'Follow-up Context', placeholder: 'Need a follow-up after intro call...', type: 'textarea', full: true },
+      { key: 'recipient_email', label: 'Send Report To', placeholder: 'you@company.com', type: 'text' }
+    ]
+  },
+  {
+    id: 'deal-intelligence',
+    name: 'Deal Intelligence',
+    icon: '🧠',
+    color: 'orange',
+    badge: 'badge-orange',
+    badgeText: 'Deals',
+    desc: 'Analyze active deals and send deal update requests to the pipeline workflow.',
+    url: 'https://learnersbyte1.app.n8n.cloud/webhook/agent-os/deal-update',
+    fields: [
+      { key: 'partner_name', label: 'Partner Name', placeholder: 'Acme Corp', type: 'text' },
+      { key: 'deal_stage', label: 'Deal Stage', placeholder: 'Discovery / Negotiation / Closing', type: 'text' },
+      { key: 'deal_value', label: 'Deal Value ($)', placeholder: '50000', type: 'text' },
+      { key: 'notes', label: 'Deal Notes', placeholder: 'Describe current deal status...', type: 'textarea', full: true },
+      { key: 'recipient_email', label: 'Send Report To', placeholder: 'you@company.com', type: 'text' }
+    ]
+  },
+  {
+    id: 'integration-tracker',
+    name: 'Integration Tracker',
+    icon: '🔌',
+    color: 'red',
+    badge: 'badge-red',
+    badgeText: 'Integration',
+    desc: 'Track partner integration progress, blockers, and operational updates.',
+    url: 'https://learnersbyte1.app.n8n.cloud/webhook/agent-os/integration',
+    fields: [
+      { key: 'partner_name', label: 'Partner Name', placeholder: 'Acme Corp', type: 'text' },
+      { key: 'integration_name', label: 'Integration Name', placeholder: 'CRM Sync API', type: 'text' },
+      { key: 'current_stage', label: 'Current Stage', placeholder: 'Testing / Development / Blocked', type: 'text' },
+      { key: 'blockers', label: 'Blockers', placeholder: 'OAuth issue, sandbox delay...', type: 'textarea', full: true },
+      { key: 'recipient_email', label: 'Send Report To', placeholder: 'you@company.com', type: 'text' }
+    ]
+  },
+  {
+    id: 'deal-monitor',
+    name: 'Deal Monitor',
+    icon: '📈',
+    color: 'purple',
+    badge: 'badge-purple',
+    badgeText: 'Pipeline',
+    desc: 'Use the deal-update endpoint for a second dedicated deal monitoring workspace.',
+    url: 'https://learnersbyte1.app.n8n.cloud/webhook/agent-os/deal-update',
+    fields: [
+      { key: 'partner_name', label: 'Partner Name', placeholder: 'Acme Corp', type: 'text' },
+      { key: 'priority', label: 'Priority', placeholder: 'High / Medium / Low', type: 'text' },
+      { key: 'owner', label: 'Owner', placeholder: 'Partnership Manager', type: 'text' },
+      { key: 'update', label: 'Latest Update', placeholder: 'Waiting on revised terms...', type: 'textarea', full: true },
+      { key: 'recipient_email', label: 'Send Report To', placeholder: 'you@company.com', type: 'text' }
+    ]
+  }
+];
 
     function buildCard(agent){
       const fieldsHTML = agent.fields.map(f => `
